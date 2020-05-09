@@ -4,7 +4,9 @@ import {
   LogoutAction,
   SetDraftBodyAction,
   SetDraftTitleAction,
-  ClearDraftAction
+  ClearDraftAction,
+  SetFilterByLikeSAction as SetFilterByLikesAction,
+  SetBlogListSortAction,
 } from "actions";
 
 type AuthState = {
@@ -31,7 +33,7 @@ type DraftPost = {
 
 const initalDraftPost = {
   title: "",
-  body: ""
+  body: "",
 };
 
 function draftPostReducer(
@@ -50,9 +52,42 @@ function draftPostReducer(
   }
 }
 
+type BlogListOptions = {
+  sortBy: "date" | "likes";
+  order: "desc" | "asc";
+  likes: number;
+};
+
+const defaultSortOptions: BlogListOptions = {
+  sortBy: "date",
+  order: "desc",
+  likes: -1,
+};
+
+function blogListOptionsReducer(
+  state: BlogListOptions = defaultSortOptions,
+  action: SetFilterByLikesAction | SetBlogListSortAction
+) {
+  switch (action.type) {
+    case "SET_BLOGLIST_FILTER_BY_LIKES": {
+      return { ...state, likes: action.likes };
+    }
+    case "SET_BLOGLIST_SORT": {
+      return {
+        ...state,
+        sortBy: action.sortBy,
+        order: action.direction,
+      };
+    }
+    default:
+      return state;
+  }
+}
+
 const rootReducer = combineReducers({
   auth: authReducer,
-  draftPost: draftPostReducer
+  draftPost: draftPostReducer,
+  blogListOptions: blogListOptionsReducer,
   // votes: votesReducer,
   // api: apiReducer
 });

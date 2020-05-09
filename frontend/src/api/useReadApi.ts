@@ -1,5 +1,6 @@
 import React from "react";
 import { slowUrl } from "./demo-helper";
+import useAppSelector from "useAppSelector";
 
 type FetchState<T> = {
   called: boolean;
@@ -7,21 +8,29 @@ type FetchState<T> = {
   error?: any;
   data?: T | null;
 };
+export default function useReadApi<T = any>(url: string) {
+  const token = useAppSelector((state) => state.auth?.token);
 
-export default function useReadApi<T = any>(url: string, options?: RequestInit) {
   const [state, setState] = React.useState<FetchState<T>>({
     called: false,
     loading: true,
-    data: null
+    data: null,
   });
 
   React.useEffect(() => {
     async function loadData() {
-      setState(oldState => ({
+      setState((oldState) => ({
         called: oldState.called,
         loading: true,
-        data: oldState.data
+        data: oldState.data,
       }));
+      const options = token
+        ? {
+            headers: {
+              Authorization: token,
+            },
+          }
+        : undefined;
       try {
         const res = await fetch(slowUrl(url), options);
         const json = await res.json();
@@ -30,27 +39,27 @@ export default function useReadApi<T = any>(url: string, options?: RequestInit) 
           setState({
             called: true,
             loading: false,
-            data: json
+            data: json,
           });
         } else {
           setState({
             called: true,
             loading: false,
-            error: json
+            error: json,
           });
         }
       } catch (error) {
         console.error("Fetch failed", error);
-        setState(oldState => ({
+        setState((oldState) => ({
           called: true,
           loading: false,
           data: oldState.data,
-          error: error
+          error: error,
         }));
       }
     }
     loadData();
-  }, [url, options]);
+  }, [url, token]);
 
   return state;
 }

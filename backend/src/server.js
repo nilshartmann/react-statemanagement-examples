@@ -6,13 +6,13 @@ const datastore = require("./datastore");
 
 const app = express();
 
-const authEnabled = process.env.USE_AUTH === "true";
+const authEnabled = true;
 /** IN REAL LIVE YOU WILL NEVER STORE JWT_SECRET IN YOUR CODE! */
 const JWT_SECRET = "hurzelpurzel";
 
 function tokenFor(userId) {
   const token = jwt.sign({ userId }, JWT_SECRET, {
-    expiresIn: "10 years"
+    expiresIn: "10 years",
   });
 
   return token;
@@ -80,28 +80,43 @@ if (authEnabled) {
 
     return res.status(200).json({
       token: tokenFor(user.id),
-      user
+      user,
     });
   });
 }
 
 app.get("/posts", (req, res) => {
-  let result;
+  let result = datastore.getAllPosts(undefined, req.userId);
   if (req.query.short !== undefined) {
-    result = datastore.getAllPosts().map(p => ({ id: p.id, date: p.date, title: p.title }));
-  } else if (req.query.full !== undefined) {
-    result = datastore.getAllPosts().map(p => ({
-      ...p,
-      author: datastore.getUser(p.userId).name
+    result = result.map((p) => ({
+      id: p.id,
+      date: p.date,
+      title: p.title,
+      published: p.published,
     }));
-  } else {
-    result = datastore.getAllPosts();
+  } else if (req.query.full !== undefined) {
+    result = result.map((p) => ({
+      ...p,
+      author: datastore.getUser(p.userId).name,
+    }));
   }
 
   if (req.query.orderBy === "newestFirst") {
     result.sort(datastore.orderByDateNewestFirst);
   } else if (req.query.orderBy === "oldestFirst") {
     result.sort(datastore.orderByDateOldestFirst);
+  } else if (req.query.orderBy === "date") {
+    if (req.query.direction === "desc") {
+      result.sort(datastore.orderByDateNewestFirst);
+    } else {
+      result.sort(datastore.orderByDateOldestFirst);
+    }
+  } else if (req.query.orderBy === "likes") {
+    if (req.query.direction === "desc") {
+      result.sort((p1, p2) => p1.likes - p2.likes);
+    } else {
+      result.sort((p1, p2) => p2.likes - p1.likes);
+    }
   } else if (req.query.orderBy === "author") {
     result.sort((p1, p2) => {
       if (!p1.author || !p2.author) {
@@ -161,7 +176,7 @@ app.get("/posts/:id/metadata", (req, res) => {
     userId: user.id,
     likes: post.likes,
     publishedAt: post.date,
-    username: user.name
+    username: user.name,
   });
 });
 

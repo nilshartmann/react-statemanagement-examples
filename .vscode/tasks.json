@@ -4,44 +4,30 @@
   "version": "2.0.0",
   "tasks": [
      {
-      "label": "02 Start Blog REST with AUTH Server",
+      "label": "01 Start Blog REST",
       "type": "npm",
-      "script": "start:withAuth",
+      "script": "start",
       "problemMatcher": [],
-      "path": "blog-example/backend-rest",
+      "path": "backend",
       "options": {
-        "cwd": "${workspaceRoot}/blog-example/backend-rest"
+        "cwd": "${workspaceRoot}/backend"
       },
       "presentation": {
-        "group": "backend"
+        "group": "blog"
       }
     },
      {
-      "label": "02 Start Blog REST Server",
+      "label": "02 Start Frontend",
       "type": "npm",
       "script": "start",
       "problemMatcher": [],
-      "path": "blog-example/backend-rest",
+      "path": "frontend",
       "options": {
-        "cwd": "${workspaceRoot}/blog-example/backend-rest"
+        "cwd": "${workspaceRoot}/frontend"
       },
       "presentation": {
-        "group": "backend"
-      }
-    },
-    {
-      "label": "01 Start Blog GRAPHQL Server",
-      "type": "npm",
-      "script": "start",
-      "problemMatcher": [],
-      "path": "${workspaceRoot}/blog-example/backend-graphql",
-      "options": {
-        "cwd": "${workspaceRoot}/blog-example/backend-graphql"
-      },
-      "presentation": {
-        "group": "backend"
+        "group": "blog"
       }
     }
-   
   ]
 }

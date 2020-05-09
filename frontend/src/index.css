@@ -165,12 +165,27 @@ label {
   width: initial;
 }
 
-.UserBadge {
+.Badge {
   color: var(--color-white);
-  background-color: var(--color-primary);
   padding: 0.2rem 0.4rem;
   font-size: 75%;
   font-weight: bold;
+}
+
+.UserBadge {
+  background-color: var(--color-primary);
+}
+
+.UnpublishedBadge {
+  background-color: #8ea5d9;
+}
+
+.Badges {
+  display: flex;
+}
+
+.Badges > .Badge {
+  margin-left: 0.4rem;
 }
 
 .Sidebar {
@@ -264,6 +279,22 @@ article h1 {
   margin-top: 0;
   width: 100%;
   border-bottom: 1px solid var(--color-main);
+}
+
+.PostListHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.SelectableOption {
+  text-decoration: underline;
+}
+
+.SelectableOption:hover,
+.SelectableOption.active {
+  color: var(--color-primary);
+  cursor: pointer;
 }
 
 /* Spinner CSS taken from: http://tobiasahlin.com/spinkit/ */
