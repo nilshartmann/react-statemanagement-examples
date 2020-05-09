@@ -1,0 +1,8 @@
+dist/
+dist-dev/
+lib/
+*.min.js
+.vscode/
+package.json
+fonts.css
+google-fonts.css
