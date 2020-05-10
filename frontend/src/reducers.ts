@@ -1,13 +1,9 @@
 import { combineReducers } from "redux";
-import {
-  LoginAction,
-  LogoutAction,
-  SetDraftBodyAction,
-  SetDraftTitleAction,
-  ClearDraftAction,
-  SetFilterByLikeSAction as SetFilterByLikesAction,
-  SetBlogListSortAction,
-} from "actions";
+import { LoginAction, LogoutAction, SetFilterByLikesAction, SetBlogListSortAction } from "actions";
+
+import apiReducer from "./api/apiReducer";
+import blogReducer from "blog/blogReducer";
+import { viewHistoryReducer } from "blog/viewHistoryReducer";
 
 type AuthState = {
   token: string;
@@ -21,32 +17,6 @@ function authReducer(state: AuthState | null = null, action: LoginAction | Logou
       return { ...action.payload };
     case "LOGOUT":
       return null;
-    default:
-      return state;
-  }
-}
-
-type DraftPost = {
-  title: string;
-  body: string;
-};
-
-const initalDraftPost = {
-  title: "",
-  body: "",
-};
-
-function draftPostReducer(
-  state: DraftPost = initalDraftPost,
-  action: SetDraftBodyAction | SetDraftTitleAction | ClearDraftAction
-) {
-  switch (action.type) {
-    case "CLEAR_DRAFT":
-      return initalDraftPost;
-    case "SET_DRAFT_BODY":
-      return { ...state, body: action.body };
-    case "SET_DRAFT_TITLE":
-      return { ...state, title: action.title };
     default:
       return state;
   }
@@ -86,10 +56,11 @@ function blogListOptionsReducer(
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  draftPost: draftPostReducer,
   blogListOptions: blogListOptionsReducer,
+  blog: blogReducer,
   // votes: votesReducer,
-  // api: apiReducer
+  api: apiReducer,
+  viewHistory: viewHistoryReducer,
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

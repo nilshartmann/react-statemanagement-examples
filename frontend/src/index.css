@@ -216,13 +216,24 @@ label {
   color: var(--grey-3);
   font-size: 1rem;
 }
+.Sidebar article {
+  margin-bottom: 1rem;
+}
+.Sidebar article p {
+  color: var(--grey-3);
+  font-weight: normal;
+  font-size: 90%;
+}
+.Sidebar article p {
+  margin: 0;
+}
 
 .Sidebar article h1 {
   color: var(--grey-3);
   font-weight: normal;
   font-size: 90%;
   border-bottom: none;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
 
 .App > header {

@@ -3,15 +3,14 @@ import { useLocation, Link } from "react-router-dom";
 import useAppSelector from "useAppSelector";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { LogoutAction, ClearDraftAction } from "actions";
+import { LogoutAction } from "actions";
 
 type UserBadgeProps = {
   username: string;
   onLogout: () => void;
-  onClearDraft: (() => void) | null;
 };
 
-function UserBadge({ username, onLogout, onClearDraft }: UserBadgeProps) {
+function UserBadge({ username, onLogout }: UserBadgeProps) {
   return (
     <span style={{ textAlign: "right" }}>
       Welcome, <b>{username}</b>
@@ -19,11 +18,6 @@ function UserBadge({ username, onLogout, onClearDraft }: UserBadgeProps) {
       <button className="Link" onClick={onLogout}>
         Logout
       </button>
-      {onClearDraft && (
-        <button className="Link" style={{ marginLeft: "0.5rem" }} onClick={onClearDraft}>
-          Clear Draft
-        </button>
-      )}
     </span>
   );
 }
@@ -45,8 +39,8 @@ function LoginButton() {
       to={{
         pathname: "/login",
         state: {
-          redirectAfter: "/"
-        }
+          redirectAfter: "/",
+        },
       }}
     >
       Login
@@ -55,21 +49,12 @@ function LoginButton() {
 }
 
 export default function AppHeader() {
-  const username = useAppSelector(state => state.auth?.username);
-  const hasDraft = useAppSelector(
-    state => state.draftPost.title !== "" || state.draftPost.body !== ""
-  );
-  const dispatch = useDispatch<Dispatch<LogoutAction | ClearDraftAction>>();
+  const username = useAppSelector((state) => state.auth?.username);
+  const dispatch = useDispatch<Dispatch<LogoutAction>>();
 
   function doLogout() {
     dispatch({
-      type: "LOGOUT"
-    });
-  }
-
-  function doClearDraft() {
-    return dispatch({
-      type: "CLEAR_DRAFT"
+      type: "LOGOUT",
     });
   }
 
@@ -78,15 +63,7 @@ export default function AppHeader() {
       <Link to="/">
         <h1>React Training Blog</h1>
       </Link>
-      {username ? (
-        <UserBadge
-          username={username}
-          onLogout={doLogout}
-          onClearDraft={hasDraft ? doClearDraft : null}
-        />
-      ) : (
-        <LoginButton />
-      )}
+      {username ? <UserBadge username={username} onLogout={doLogout} /> : <LoginButton />}
     </header>
   );
 }

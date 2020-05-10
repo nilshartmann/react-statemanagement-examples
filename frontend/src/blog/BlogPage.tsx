@@ -1,6 +1,6 @@
 import React from "react";
 import { Page, Main, Sidebar } from "Layout";
-import PostList from "postlist/PostList";
+import ViewHistory from "./sidebar/ViewHistory";
 
 type BlogPageProps = {
   children: React.ReactNode;
@@ -11,7 +11,7 @@ export default function BlogPage({ children }: BlogPageProps) {
     <Page>
       <Main>{children}</Main>
       <Sidebar>
-        <h1>Last viewed</h1>
+        <ViewHistory />
       </Sidebar>
     </Page>
   );

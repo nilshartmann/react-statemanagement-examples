@@ -1,20 +1,13 @@
 import React, { Dispatch } from "react";
 import { Link } from "react-router-dom";
-import { linkToPost, formattedDate } from "../utils";
+import { linkToPost, formattedDate } from "../../utils";
 import useAppSelector from "useAppSelector";
 import { useDispatch } from "react-redux";
 import { SetBlogListSortAction, setBlogListSort } from "actions";
+import { BlogPostShort } from "types";
 
 type PostListProps = {
-  posts: Array<{
-    id: string;
-    date: string;
-    title: string;
-    teaser: string;
-    userId: string;
-    published: boolean;
-    likes: number;
-  }>;
+  posts: Array<BlogPostShort>;
 };
 
 type BadgeProps = {
@@ -120,7 +113,7 @@ export default function PostList({ posts }: PostListProps) {
                 {p.published || <DraftBadge />}
               </Badges>
             </header>
-            {p.teaser} <span>Read more</span> ({p.likes} Likes)
+            <span>Read more</span> ({p.likes} Likes)
           </article>
         </Link>
       ))}

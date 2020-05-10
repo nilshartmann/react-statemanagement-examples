@@ -1,3 +1,15 @@
+export type BlogPostShort = {
+  id: string;
+  date: string;
+  title: string;
+  userId: string;
+  published: boolean;
+  likes: number;
+};
+
+export type BlogPost = BlogPostShort & {
+  body: string;
+};
 export type NewBlogPost = {
   title: string;
   body: string;

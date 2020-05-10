@@ -86,20 +86,23 @@ if (authEnabled) {
 }
 
 app.get("/posts", (req, res) => {
-  let result = datastore.getAllPosts(undefined, req.userId);
-  if (req.query.short !== undefined) {
-    result = result.map((p) => ({
-      id: p.id,
-      date: p.date,
-      title: p.title,
-      published: p.published,
-    }));
-  } else if (req.query.full !== undefined) {
-    result = result.map((p) => ({
-      ...p,
-      author: datastore.getUser(p.userId).name,
-    }));
-  }
+  let result = datastore.getAllPosts(undefined, req.userId).map((p) => ({
+    ...p,
+    body: undefined,
+  }));
+  // if (req.query.short !== undefined) {
+  //   result = result.map((p) => ({
+  //     id: p.id,
+  //     date: p.date,
+  //     title: p.title,
+  //     published: p.published,
+  //   }));
+  // } else if (req.query.full !== undefined) {
+  //   result = result.map((p) => ({
+  //     ...p,
+  //     author: datastore.getUser(p.userId).name,
+  //   }));
+  // }
 
   if (req.query.orderBy === "newestFirst") {
     result.sort(datastore.orderByDateNewestFirst);

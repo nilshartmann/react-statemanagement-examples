@@ -1,14 +1,14 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import useReadApi from "../api/useReadApi";
-import LoadingIndicator from "../LoadingIndicator";
-import { assertDataPresent } from "../types";
+import useReadApi from "../../api/useReadApi";
+import LoadingIndicator from "../../LoadingIndicator";
+import { assertDataPresent } from "../../types";
 import { formattedDate } from "utils";
 import useAppSelector from "useAppSelector";
 
 export default function PostPageSidebar() {
   const { postId } = useParams();
-  const currentUsername = useAppSelector(state => state.auth?.username);
+  const currentUsername = useAppSelector((state) => state.auth?.username);
 
   if (!postId) {
     throw new Error("Param PostId must be defined");
