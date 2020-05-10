@@ -32,14 +32,14 @@ app.use((_, res, next) => {
 });
 
 app.use((req, _res, next) => {
-  if (req.query.slow !== undefined) {
-    // can't remember why I do this kind of math, but it seems to work 😱
-    const timeout = (Math.floor(Math.random() * 4) + 2) * 550;
-    console.log(`Slow down ${timeout}ms`);
-    setTimeout(next, timeout);
-  } else {
-    next();
-  }
+  // if (req.query.slow !== undefined) {
+  // can't remember why I do this kind of math, but it seems to work 😱
+  const timeout = (Math.floor(Math.random() * 4) + 2) * 225;
+  console.log(`Slow down ${timeout}ms`);
+  setTimeout(next, timeout);
+  // } else {
+  //   next();
+  // }
 });
 
 if (authEnabled) {
@@ -142,6 +142,21 @@ app.get("/most-liked-posts", (req, res) => {
   res.status(200).json(datastore.getAllPosts(orderByLikes).slice(0, 5));
 });
 
+app.get("/recommendations", (req, res) => {
+  const allPosts = datastore.getAllPosts(undefined, req.userId);
+  const recommendations = [];
+
+  function getRandomInt() {
+    return Math.floor(Math.random() * Math.floor(allPosts.length));
+  }
+
+  while (recommendations.length < 5) {
+    recommendations.push(allPosts.splice(getRandomInt(), 1));
+  }
+
+  res.status(200).json(recommendations);
+});
+
 // Return Post with specified id (or 404)
 app.get("/posts/:id", (req, res) => {
   const post = datastore.getPost(req.params.id);
@@ -237,8 +252,6 @@ app.put("/posts", (req, res) => {
   }
 
   const updatedPost = datastore.updatePost(post);
-
-  console.log("UPDATE", updatedPost);
 
   if (!updatedPost) {
     return res.status(404).json({ error: `Post with id ${post.id} not found` });

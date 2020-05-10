@@ -28,16 +28,3 @@ export default function PostListPageMain() {
   // data is now PostListQuery
   return <PostList posts={data} />;
 }
-
-// PostListPage() {
-//   return (
-//     <Page>
-//       <Main>
-//         <PostListPageMain />
-//       </Main>
-//       <Sidebar>
-//         <PostListSidebar />
-//       </Sidebar>
-//     </Page>
-//   );
-// }

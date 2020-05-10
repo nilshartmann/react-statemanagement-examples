@@ -5,7 +5,7 @@ import useApi from "../api/useReadApi";
 import { assertDataPresent } from "../types";
 import LoadingIndicator from "LoadingIndicator";
 
-export default function PostPageMain() {
+export default function PostPage() {
   const { postId } = useParams();
 
   if (!postId) {
