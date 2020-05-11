@@ -1,12 +1,9 @@
 import React from "react";
 import { linkToPost, formattedDate } from "../../utils";
 import { Link } from "react-router-dom";
-import { createSelector } from "reselect";
 
 import useAppSelector from "useAppSelector";
-import { useStore } from "react-redux";
-import { AppState } from "reducers";
-import { BlogPostShort } from "types";
+import { selectedViewsPosts } from "blog/viewHistoryReducer";
 
 type SidebarPost = {
   id: string;
@@ -22,17 +19,6 @@ export default function Sidebar() {
     </>
   );
 }
-
-const selectViewedPostIds = (state: AppState) => state.viewHistory.postsViewed;
-const selectAllPosts = (state: AppState) => state.blog.posts;
-
-const selectedViewsPosts = createSelector(
-  [selectViewedPostIds, selectAllPosts],
-  (viewedPostIds, allPosts) => {
-    console.log("selectedViewsPosts called!");
-    return allPosts.filter((p) => viewedPostIds.includes(p.id));
-  }
-);
 
 function SidebarContent() {
   const viewedPosts = useAppSelector(selectedViewsPosts);

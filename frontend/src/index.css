@@ -106,6 +106,10 @@ button:hover:disabled {
   cursor: default;
 }
 
+.LikeButton {
+  padding: 0.1rem 0.3rem;
+}
+
 .Link {
   margin: 0;
   padding: 0;

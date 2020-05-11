@@ -132,7 +132,7 @@ function PostSummary({ post, currentUserId, onLikePost }: PostSummaryProps) {
   } else {
     const likedByMe = post.likedBy.includes(currentUserId);
     likes = (
-      <button onClick={onLikePost}>
+      <button className="LikeButton" onClick={onLikePost}>
         {post.likes} Likes {likedByMe && <>(including me!)</>}
       </button>
     );
