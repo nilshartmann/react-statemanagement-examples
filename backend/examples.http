@@ -54,6 +54,12 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJVMiIsImlhdCI6
 
 ###
 
+POST http://localhost:7000/posts/P1/like
+content-type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJVMiIsImlhdCI6MTU3OTM3NzkxOSwiZXhwIjoxODk0OTUzOTE5fQ.BZHU2zh_kt9hda7uDgTj5UfDrWmt0UIPKwkG3a0Cs8E
+
+###
+
 # Login
 POST http://localhost:7000/login
 content-type: application/json

@@ -30,6 +30,7 @@ function getAllPosts(orderByFn = orderByDateNewestFirst, userId) {
     console.log(`post.userId: '${post.userId}' published: ${post.published}`);
     return post.published || post.userId === userId;
   });
+
   allPosts.sort(orderByFn);
 
   return allPosts;
@@ -51,16 +52,34 @@ function getUserByLogin(login) {
   return users.find((u) => u.login === login);
 }
 
-function likePost(postId) {
+function likePost(postId, userId) {
   const post = posts.get(postId);
+  console.log("LIKE POST with User Id ", userId, post.likedBy);
 
   if (!post) {
     throw new Error(`Cannot find BlogPost '${postId}'`);
   }
 
+  let newLikedBy = post.likedBy.filter((l) => l !== userId);
+  console.log("newLikedBy", newLikedBy);
+  let newLikes = post.likes;
+  if (userId) {
+    if (newLikedBy.length === post.likedBy.length) {
+      newLikedBy.push(userId);
+      console.log("now newLikedBy: ", newLikedBy);
+      newLikes++;
+    } else {
+      newLikes--;
+    }
+  } else {
+    // anonymous like
+    newLikes++;
+  }
+
   const updatedPost = {
     ...post,
-    likes: post.likes + 1,
+    likes: newLikes,
+    likedBy: newLikedBy,
   };
 
   posts.set(postId, updatedPost);

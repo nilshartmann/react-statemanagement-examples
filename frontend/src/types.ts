@@ -5,6 +5,7 @@ export type BlogPostShort = {
   userId: string;
   published: boolean;
   likes: number;
+  likedBy: string[];
 };
 
 export type BlogPost = BlogPostShort & {

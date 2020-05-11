@@ -1,5 +1,10 @@
 import { BlogPost, BlogPostShort } from "types";
-import { SetPostsAction, SetFullPostAction } from "./blogActions";
+import {
+  SetPostsAction,
+  SetFullPostAction,
+  UpdatePostLikesAction,
+  TogglePostLikeAction,
+} from "./blogActions";
 
 type BlogState = {
   posts: Array<BlogPostShort | BlogPost>;
@@ -13,7 +18,7 @@ const defaultBlogState: BlogState = {
 
 export default function blogReducer(
   state = defaultBlogState,
-  action: SetPostsAction | SetFullPostAction
+  action: SetPostsAction | SetFullPostAction | UpdatePostLikesAction | TogglePostLikeAction
 ): BlogState {
   switch (action.type) {
     case "SET_POSTS":
@@ -34,6 +39,40 @@ export default function blogReducer(
           oldPost.id !== action.post.id ? oldPost : action.post
         ),
       };
+    case "TOGGLE_POST_LIKE_ACTION": {
+      return {
+        ...state,
+        posts: state.posts.map((oldPost) => {
+          if (oldPost.id !== action.payload.postId) {
+            return oldPost;
+          }
+          let newLikedBy = oldPost.likedBy.filter((l) => l !== action.payload.userId);
+          let newLikes = oldPost.likes;
+          if (newLikedBy.length === oldPost.likedBy.length) {
+            newLikedBy.push(action.payload.userId);
+            newLikes++;
+          } else {
+            newLikes--;
+          }
+
+          return { ...oldPost, likes: newLikes, likedBy: newLikedBy };
+        }),
+      };
+    }
+    case "UPDATE_POST_LIKES": {
+      return {
+        ...state,
+        posts: state.posts.map((oldPost) =>
+          oldPost.id === action.payload.postId
+            ? {
+                ...oldPost,
+                likedBy: action.payload.likedBy,
+                likes: action.payload.likes,
+              }
+            : oldPost
+        ),
+      };
+    }
     default:
       return state;
   }

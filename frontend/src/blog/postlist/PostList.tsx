@@ -4,6 +4,7 @@ import { linkToPost, formattedDate } from "../../utils";
 import useAppSelector from "useAppSelector";
 import { useDispatch } from "react-redux";
 import { SetBlogListSortAction, setBlogListSort } from "actions";
+import { UpdatePostLikesAction, toggleLikePost } from "./../blogActions";
 import { BlogPostShort } from "types";
 
 type PostListProps = {
@@ -98,25 +99,61 @@ function PostListHeader({ isLoggedIn }: ListHeaderProps) {
 
 export default function PostList({ posts }: PostListProps) {
   const currentUserId = useAppSelector((state) => state.auth?.userId);
+  const dispatch = useDispatch();
+
+  function likePost(postId: string) {
+    dispatch(toggleLikePost(postId));
+  }
 
   return (
     <>
       <PostListHeader isLoggedIn={!!currentUserId} />
       {posts.map((p) => (
-        <Link key={p.id} to={linkToPost(p)}>
-          <article className="Container">
-            <p className="Date">{formattedDate(p.date)}</p>
-            <header>
-              <h1>{p.title}</h1>
-              <Badges>
-                {currentUserId === p.userId && <UserBadge />}
-                {p.published || <DraftBadge />}
-              </Badges>
-            </header>
-            <span>Read more</span> ({p.likes} Likes)
-          </article>
-        </Link>
+        <PostSummary
+          key={p.id}
+          post={p}
+          currentUserId={currentUserId}
+          onLikePost={() => likePost(p.id)}
+        />
       ))}
     </>
+  );
+}
+
+type PostSummaryProps = {
+  currentUserId?: string;
+  post: BlogPostShort;
+  onLikePost(): void;
+};
+function PostSummary({ post, currentUserId, onLikePost }: PostSummaryProps) {
+  let likes;
+  if (!currentUserId) {
+    likes = <> ({post.likes} Likes)</>;
+  } else {
+    const likedByMe = post.likedBy.includes(currentUserId);
+    likes = (
+      <button onClick={onLikePost}>
+        {post.likes} Likes {likedByMe && <>(including me!)</>}
+      </button>
+    );
+  }
+
+  return (
+    <article className="Container">
+      <p className="Date">{formattedDate(post.date)}</p>
+      <header>
+        <Link key={post.id} to={linkToPost(post)}>
+          <h1>{post.title}</h1>
+        </Link>
+        <Badges>
+          {currentUserId === post.userId && <UserBadge />}
+          {post.published || <DraftBadge />}
+        </Badges>
+      </header>
+      <Link key={post.id} to={linkToPost(post)}>
+        <span>Read more</span>
+      </Link>{" "}
+      {likes}
+    </article>
   );
 }

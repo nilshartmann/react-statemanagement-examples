@@ -5,6 +5,7 @@ function readPosts() {
   const newPost = () => ({
     id: `P${posts.size + 1}`,
     body: "",
+    likedBy: [],
   });
   let currentPost = newPost();
 

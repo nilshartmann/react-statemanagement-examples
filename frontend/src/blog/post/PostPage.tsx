@@ -10,10 +10,11 @@ import { postShown } from "blog/viewHistoryActions";
 export default function PostPage() {
   const dispatch = useDispatch();
   const { postId } = useParams();
-  const post = useAppSelector(
-    (state) =>
+  const post = useAppSelector((state) => {
+    return (
       state.blog.posts.find((candidate) => candidate.id === postId && "body" in candidate) || null
-  ) as BlogPost | null;
+    );
+  }) as BlogPost | null;
 
   if (!postId) {
     throw new Error("Param PostId must be defined");

@@ -42,48 +42,46 @@ app.use((req, _res, next) => {
   // }
 });
 
-if (authEnabled) {
-  app.use((req, _res, next) => {
-    const token = req.headers.authorization;
-    if (token) {
-      const payload = jwt.verify(token, JWT_SECRET);
-      const user = datastore.getUser(payload.userId);
-      if (!user) {
-        return res.status(401).json({ error: `User with id '${payload.userId}' not found` });
-      }
-      req.user = user;
-      req.userId = user.id;
-    }
-    next();
-  });
-
-  app.post("/login", (req, res) => {
-    const login = req.body;
-
-    if (!login) {
-      return res.status(400).json({ error: "login (payload) must be defined" });
-    }
-
-    if (!login.login) {
-      return res.status(400).json({ error: "login.login must be defined" });
-    }
-
-    if (!login.password) {
-      return res.status(400).json({ error: "login.password must be defined" });
-    }
-
-    const user = datastore.getUserByLogin(login.login);
-
+app.use((req, _res, next) => {
+  const token = req.headers.authorization;
+  if (token) {
+    const payload = jwt.verify(token, JWT_SECRET);
+    const user = datastore.getUser(payload.userId);
     if (!user) {
-      return res.status(403).json({ error: "Invalid user" });
+      return res.status(401).json({ error: `User with id '${payload.userId}' not found` });
     }
+    req.user = user;
+    req.userId = user.id;
+  }
+  next();
+});
 
-    return res.status(200).json({
-      token: tokenFor(user.id),
-      user,
-    });
+app.post("/login", (req, res) => {
+  const login = req.body;
+
+  if (!login) {
+    return res.status(400).json({ error: "login (payload) must be defined" });
+  }
+
+  if (!login.login) {
+    return res.status(400).json({ error: "login.login must be defined" });
+  }
+
+  if (!login.password) {
+    return res.status(400).json({ error: "login.password must be defined" });
+  }
+
+  const user = datastore.getUserByLogin(login.login);
+
+  if (!user) {
+    return res.status(403).json({ error: "Invalid user" });
+  }
+
+  return res.status(200).json({
+    token: tokenFor(user.id),
+    user,
   });
-}
+});
 
 app.get("/posts", (req, res) => {
   let result = datastore.getAllPosts(undefined, req.userId).map((p) => ({
@@ -176,28 +174,6 @@ app.get("/posts/:id", (req, res) => {
   return res.status(200).json({ ...post, user });
 });
 
-/** Some "metadata" (just more data about a post, to provider another endpoint) */
-app.get("/posts/:id/metadata", (req, res) => {
-  const post = datastore.getPost(req.params.id);
-
-  if (!post) {
-    return res.status(404).json({ error: `Post '${req.params.id}' not found` });
-  }
-
-  const user = datastore.getUser(post.userId);
-  if (!user) {
-    return res.status(404).json({ error: `User '${post.userId}' not found` });
-  }
-
-  return res.status(200).json({
-    postId: post.id,
-    userId: user.id,
-    likes: post.likes,
-    publishedAt: post.date,
-    username: user.name,
-  });
-});
-
 app.post("/posts", (req, res) => {
   if (authEnabled && !req.user) {
     return res.status(401).json({ error: "You must be logged in to execute this action" });
@@ -230,6 +206,30 @@ app.post("/posts", (req, res) => {
   }
 
   res.status(201).json(newPost);
+});
+
+app.post("/posts/:id/like", (req, res) => {
+  const post = datastore.getPost(req.params.id);
+
+  if (!post) {
+    return res.status(404).json({ error: `Post '${req.params.id}' not found` });
+  }
+
+  if (post.id === "P9") {
+    // simluation: error in processing
+    return res.status(200).json({
+      postId: post.id,
+      likedBy: post.likedBy,
+      likes: post.likes,
+    });
+  }
+
+  const likedPost = datastore.likePost(post.id, req.userId);
+  res.status(200).json({
+    postId: likedPost.id,
+    likedBy: likedPost.likedBy,
+    likes: likedPost.likes,
+  });
 });
 
 app.put("/posts", (req, res) => {

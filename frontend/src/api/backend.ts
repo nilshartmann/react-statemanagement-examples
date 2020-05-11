@@ -20,7 +20,7 @@ export async function fetchJson(path: string, token?: string) {
 
 type HttpMethod = "get" | "post" | "put" | "patch" | "delete";
 
-export async function sendJson(method: HttpMethod, path: string, payload = {}) {
+export async function sendJson(method: HttpMethod, path: string, token: string, payload = {}) {
   const url = `${BACKEND_URL}${path}`;
 
   const response = await fetch(url, {
@@ -29,6 +29,7 @@ export async function sendJson(method: HttpMethod, path: string, payload = {}) {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: token,
     },
   });
 

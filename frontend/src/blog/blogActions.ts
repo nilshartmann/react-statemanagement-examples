@@ -2,7 +2,7 @@ import { BlogPost, BlogPostShort } from "types";
 import { ThunkAction } from "redux-thunk";
 import { AppState } from "reducers";
 import { ApiAction, apiRequestStart, apiRequestSuccess, apiRequestFailure } from "api/apiActions";
-import { fetchJson } from "api/backend";
+import { fetchJson, sendJson } from "api/backend";
 
 function setPosts(
   posts: BlogPostShort[],
@@ -33,7 +33,6 @@ export function loadPostsFromServer(
 ): ThunkAction<void, AppState, void, ApiAction | SetPostsAction> {
   return (dispatch, getState) => {
     const { blog } = getState();
-    console.log("token", token, "options.token", blog.options.token);
     if (
       blog.posts.length > 0 &&
       blog.options.orderBy === orderBy &&
@@ -72,6 +71,52 @@ export function loadPostFromServer(
         dispatch(apiRequestSuccess());
       },
       (error) => dispatch(apiRequestFailure(error))
+    );
+  };
+}
+
+function updatePostLikes(postId: string, likes: number, likedBy: string[]) {
+  return {
+    type: "UPDATE_POST_LIKES",
+    payload: {
+      postId,
+      likes,
+      likedBy,
+    },
+  } as const;
+}
+export type UpdatePostLikesAction = ReturnType<typeof updatePostLikes>;
+
+function togglePostLike(postId: string, userId: string) {
+  return {
+    type: "TOGGLE_POST_LIKE_ACTION",
+    payload: {
+      postId,
+      userId,
+    },
+  } as const;
+}
+
+export type TogglePostLikeAction = ReturnType<typeof togglePostLike>;
+
+export function toggleLikePost(
+  postId: string
+): ThunkAction<void, AppState, void, UpdatePostLikesAction | TogglePostLikeAction> {
+  return (dispatch, getState) => {
+    const { auth } = getState();
+
+    if (!auth) {
+      return;
+    }
+
+    // Optimistic
+    dispatch(togglePostLike(postId, auth.userId));
+
+    sendJson("post", `/posts/${postId}/like`, auth.token).then(
+      (post) => {
+        dispatch(updatePostLikes(postId, post.likes, post.likedBy));
+      },
+      (error) => console.error("Could not update post", error)
     );
   };
 }
