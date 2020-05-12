@@ -1,5 +1,5 @@
 import { SetFilterByLikesAction, SetBlogListSortAction } from "./blogOptionActions";
-
+import produce from "immer";
 type BlogListOptions = {
   sortBy: "date" | "likes";
   order: "desc" | "asc";
@@ -12,7 +12,7 @@ const defaultSortOptions: BlogListOptions = {
   likes: -1,
 };
 
-export default function blogListOptionsReducer(
+export function blogListOptionsReducer(
   state: BlogListOptions = defaultSortOptions,
   action: SetFilterByLikesAction | SetBlogListSortAction
 ) {
@@ -30,4 +30,22 @@ export default function blogListOptionsReducer(
     default:
       return state;
   }
+}
+
+export default function blogListOptionsReducerWithImmer(
+  oldState: BlogListOptions = defaultSortOptions,
+  action: SetFilterByLikesAction | SetBlogListSortAction
+) {
+  return produce(oldState, (state) => {
+    switch (action.type) {
+      case "SET_BLOGLIST_FILTER_BY_LIKES": {
+        state.likes = action.likes;
+        return;
+      }
+      case "SET_BLOGLIST_SORT": {
+        state.sortBy = action.sortBy;
+        state.order = action.direction;
+      }
+    }
+  });
 }
