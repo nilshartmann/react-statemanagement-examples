@@ -4,8 +4,9 @@ import { useLocation } from "react-router-dom";
 import useWriteApi from "../api/useWriteApi";
 import LoadingIndicator from "LoadingIndicator";
 import { useDispatch } from "react-redux";
-import { login as loginAction, LoginAction, NavigateAction, navigateTo } from "../actions";
+import { login as loginAction, LoginAction } from "./authActions";
 import { Dispatch } from "redux";
+import { NavigateAction, navigateTo } from "navigateActions";
 
 type LoginErrorResponse = { error: string };
 type LoginSuccessResponse = { token: string; user: { id: string; login: string; name: string } };

@@ -1,7 +1,9 @@
 export function apiRequestStart(description: string) {
   return {
     type: "API_REQUEST_START",
-    description,
+    payload: {
+      description,
+    },
   } as const;
 }
 
@@ -18,7 +20,9 @@ export type ApiRequestSuccessAction = ReturnType<typeof apiRequestSuccess>;
 export function apiRequestFailure(error: string) {
   return {
     type: "API_REQUEST_FAILURE",
-    error,
+    payload: {
+      error,
+    },
   } as const;
 }
 

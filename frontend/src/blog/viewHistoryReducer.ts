@@ -27,12 +27,12 @@ const defaultViewHistoryState: ViewHistoryState = {
 export function viewHistoryReducer(state = defaultViewHistoryState, action: PostShownAction) {
   switch (action.type) {
     case "POST_SHOWN":
-      if (state.postsViewed.length > 0 && state.postsViewed[0] === action.postId) {
+      if (state.postsViewed.length > 0 && state.postsViewed[0] === action.payload.postId) {
         return state;
       }
       return {
-        postsViewed: [action.postId].concat(
-          state.postsViewed.filter((pId) => pId !== action.postId)
+        postsViewed: [action.payload.postId].concat(
+          state.postsViewed.filter((pId) => pId !== action.payload.postId)
         ),
       };
     default:

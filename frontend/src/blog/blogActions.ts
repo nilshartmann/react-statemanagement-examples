@@ -20,7 +20,9 @@ export type SetPostsAction = ReturnType<typeof setPosts>;
 function setFullPost(post: BlogPost) {
   return {
     type: "SET_FULL_POST",
-    post,
+    payload: {
+      post,
+    },
   } as const;
 }
 

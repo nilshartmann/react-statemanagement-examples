@@ -23,7 +23,7 @@ export default function apiReducer(
   switch (action.type) {
     case "API_REQUEST_START":
       return {
-        description: action.description,
+        description: action.payload.description,
         loading: true,
         error: null,
       };
@@ -33,7 +33,7 @@ export default function apiReducer(
       return {
         ...state,
         loading: false,
-        error: action.error.toString(),
+        error: action.payload.error.toString(),
       };
     default:
   }

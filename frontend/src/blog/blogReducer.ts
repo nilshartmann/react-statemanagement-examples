@@ -27,16 +27,16 @@ export default function blogReducer(
         options: action.options,
       };
     case "SET_FULL_POST":
-      if (!state.posts.find((p) => p.id === action.post.id)) {
+      if (!state.posts.find((p) => p.id === action.payload.post.id)) {
         return {
           ...state,
-          posts: [...state.posts, action.post],
+          posts: [...state.posts, action.payload.post],
         };
       }
       return {
         ...state,
         posts: state.posts.map((oldPost) =>
-          oldPost.id !== action.post.id ? oldPost : action.post
+          oldPost.id !== action.payload.post.id ? oldPost : action.payload.post
         ),
       };
     case "TOGGLE_POST_LIKE_ACTION": {

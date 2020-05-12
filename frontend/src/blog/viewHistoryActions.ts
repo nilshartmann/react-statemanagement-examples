@@ -1,7 +1,9 @@
 export function postShown(postId: string) {
   return {
     type: "POST_SHOWN",
-    postId,
+    payload: {
+      postId,
+    },
   } as const;
 }
 

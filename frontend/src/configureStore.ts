@@ -4,7 +4,7 @@ import thunk from "redux-thunk";
 import { History } from "history";
 
 import reducer from "./reducers";
-import { NavigateAction } from "actions";
+import { NavigateAction } from "navigateActions";
 
 // Redux Dev Tools: http://extension.remotedev.io/#12-advanced-store-setup
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__

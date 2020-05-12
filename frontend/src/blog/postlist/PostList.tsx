@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { linkToPost, formattedDate } from "../../utils";
 import useAppSelector from "useAppSelector";
 import { useDispatch } from "react-redux";
-import { SetBlogListSortAction, setBlogListSort } from "actions";
-import { UpdatePostLikesAction, toggleLikePost } from "./../blogActions";
+import { toggleLikePost } from "./../blogActions";
 import { BlogPostShort } from "types";
+import { SetBlogListSortAction, setBlogListSort } from "blog/blogOptionActions";
 
 type PostListProps = {
   posts: Array<BlogPostShort>;

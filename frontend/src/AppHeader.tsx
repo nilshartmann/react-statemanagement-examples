@@ -3,7 +3,7 @@ import { useLocation, Link } from "react-router-dom";
 import useAppSelector from "useAppSelector";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { LogoutAction } from "actions";
+import { LogoutAction } from "auth/authActions";
 
 type UserBadgeProps = {
   username: string;
