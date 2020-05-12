@@ -25,9 +25,7 @@ const orderByDateNewestFirst = (p1, p2) => new Date(p2.date) - new Date(p1.date)
 const orderByDateOldestFirst = (p1, p2) => new Date(p1.date) - new Date(p2.date);
 
 function getAllPosts(orderByFn = orderByDateNewestFirst, userId) {
-  console.log(`userId: '${userId}'`);
   const allPosts = [...posts.values()].filter((post) => {
-    console.log(`post.userId: '${post.userId}' published: ${post.published}`);
     return post.published || post.userId === userId;
   });
 
@@ -54,19 +52,16 @@ function getUserByLogin(login) {
 
 function likePost(postId, userId) {
   const post = posts.get(postId);
-  console.log("LIKE POST with User Id ", userId, post.likedBy);
 
   if (!post) {
     throw new Error(`Cannot find BlogPost '${postId}'`);
   }
 
   let newLikedBy = post.likedBy.filter((l) => l !== userId);
-  console.log("newLikedBy", newLikedBy);
   let newLikes = post.likes;
   if (userId) {
     if (newLikedBy.length === post.likedBy.length) {
       newLikedBy.push(userId);
-      console.log("now newLikedBy: ", newLikedBy);
       newLikes++;
     } else {
       newLikes--;
