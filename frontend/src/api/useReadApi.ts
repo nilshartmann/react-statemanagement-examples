@@ -1,5 +1,4 @@
 import React from "react";
-import { slowUrl } from "./demo-helper";
 import useAppSelector from "useAppSelector";
 
 type FetchState<T> = {
@@ -32,7 +31,7 @@ export default function useReadApi<T = any>(url: string) {
           }
         : undefined;
       try {
-        const res = await fetch(slowUrl(url), options);
+        const res = await fetch(url, options);
         const json = await res.json();
 
         if (res.status >= 200 && res.status < 300) {

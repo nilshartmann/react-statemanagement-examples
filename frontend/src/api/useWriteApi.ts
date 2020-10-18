@@ -1,5 +1,4 @@
 import React from "react";
-import { slowUrl } from "./demo-helper";
 import useAppSelector from "useAppSelector";
 
 type FetchState<T> = {
@@ -16,36 +15,36 @@ type WriteOptions = {
 export default function useWriteApi<T>(
   url: string,
   options: WriteOptions = {
-    method: "POST"
+    method: "POST",
   }
 ) {
-  const token = useAppSelector(state => state.auth?.token);
+  const token = useAppSelector((state) => state.auth?.token);
   const [state, setState] = React.useState<FetchState<T>>({
     loading: false,
     data: null,
-    called: false
+    called: false,
   });
 
   async function post(payload: any) {
     let newState: FetchState<T>;
     try {
       const headers: HeadersInit = {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       };
       if (token) {
         headers["Authorization"] = token;
       }
 
-      setState(oldState => ({
+      setState((oldState) => ({
         called: oldState.called,
         loading: true,
-        data: oldState.data
+        data: oldState.data,
       }));
 
-      const res = await fetch(slowUrl(url), {
+      const res = await fetch(url, {
         method: options.method || "POST",
         headers,
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       const json = await res.json();
@@ -54,13 +53,13 @@ export default function useWriteApi<T>(
         newState = {
           called: true,
           loading: false,
-          data: json
+          data: json,
         };
       } else {
         newState = {
           called: true,
           loading: false,
-          error: json
+          error: json,
         };
       }
     } catch (error) {
@@ -69,7 +68,7 @@ export default function useWriteApi<T>(
         called: true,
         loading: false,
         data: state.data,
-        error: error
+        error: error,
       };
     }
     setState(newState);

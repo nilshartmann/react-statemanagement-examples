@@ -17,7 +17,7 @@ function SuccessConfirmation() {
 }
 
 export default function PostEditorPage() {
-  const [savePost, { loading, error, called }] = useWriteApi("http://localhost:7000/posts");
+  const [savePost, { loading, error, called }] = useWriteApi("/api/posts");
   const isAuthenticated = useAppSelector((state) => state.auth != null);
 
   if (!isAuthenticated) {

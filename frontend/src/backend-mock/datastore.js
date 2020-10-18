@@ -1,4 +1,5 @@
-const { readPosts, readUsers } = require("./example-post-reader");
+import { getTestData } from "./dummy-data";
+
 /** User
  *  @typedef {Object} User
  *  @property {string} id - The unique id
@@ -16,15 +17,17 @@ const { readPosts, readUsers } = require("./example-post-reader");
  *  @property {number} likes - Likes!
  */
 
-/** @type {User[]} */
-const users = readUsers();
-/** @type {Map<string,BlogPost>} */
-const posts = readPosts();
+const { users, posts } = getTestData();
 
-const orderByDateNewestFirst = (p1, p2) => new Date(p2.date) - new Date(p1.date);
-const orderByDateOldestFirst = (p1, p2) => new Date(p1.date) - new Date(p2.date);
+// /** @type {User[]} */
+// const users = readUsers();
+// /** @type {Map<string,BlogPost>} */
+// const posts = readPosts();
 
-function getAllPosts(orderByFn = orderByDateNewestFirst, userId) {
+export const orderByDateNewestFirst = (p1, p2) => new Date(p2.date) - new Date(p1.date);
+export const orderByDateOldestFirst = (p1, p2) => new Date(p1.date) - new Date(p2.date);
+
+export function getAllPosts(orderByFn = orderByDateNewestFirst, userId) {
   const allPosts = [...posts.values()].filter((post) => {
     return post.published || post.userId === userId;
   });
@@ -34,23 +37,23 @@ function getAllPosts(orderByFn = orderByDateNewestFirst, userId) {
   return allPosts;
 }
 
-function getPost(postId) {
+export function getPost(postId) {
   return posts.get(postId);
 }
 
-function getAllUsers() {
+export function getAllUsers() {
   return users;
 }
 
-function getUser(userId) {
+export function getUser(userId) {
   return users.find((u) => u.id === userId);
 }
 
-function getUserByLogin(login) {
+export function getUserByLogin(login) {
   return users.find((u) => u.login === login);
 }
 
-function likePost(postId, userId) {
+export function likePost(postId, userId) {
   const post = posts.get(postId);
 
   if (!post) {
@@ -82,7 +85,7 @@ function likePost(postId, userId) {
   return updatedPost;
 }
 
-function updatePost(postData) {
+export function updatePost(postData) {
   const post = posts.get(postData.id);
 
   if (!post) {
@@ -100,16 +103,17 @@ function updatePost(postData) {
   return updatedPost;
 }
 
-function deletePost(postId) {
+export function deletePost(postId) {
   return posts.delete(postId);
 }
 
-function insertPost(userId, { title, body }) {
+export function insertPost(userId, { title, body }) {
   const newPost = {
     userId,
     title,
     body,
     likes: 0,
+    likedBy: [],
     date: new Date().toISOString(),
     id: `P${posts.size + 1}`,
   };
@@ -118,18 +122,3 @@ function insertPost(userId, { title, body }) {
 
   return newPost;
 }
-
-module.exports = {
-  getAllPosts,
-  getAllUsers,
-  getUser,
-  getUserByLogin,
-  insertPost,
-  updatePost,
-  deletePost,
-  likePost,
-  getPost,
-
-  orderByDateOldestFirst,
-  orderByDateNewestFirst,
-};

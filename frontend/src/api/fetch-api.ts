@@ -1,4 +1,4 @@
-const BACKEND_URL = "http://localhost:7000";
+const BACKEND_URL = "/api";
 
 export async function fetchJson(path: string, token?: string) {
   const url = `${BACKEND_URL}${path}`;

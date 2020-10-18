@@ -19,7 +19,7 @@ function isSuccess(response?: any): response is LoginSuccessResponse {
 
 export default function LoginPage() {
   const location = useLocation();
-  const [mutate, { error, loading }] = useWriteApi<LoginResponse>("http://localhost:7000/login");
+  const [mutate, { error, loading }] = useWriteApi<LoginResponse>("/api/login");
   const dispatch = useDispatch<Dispatch<LoginAction | NavigateAction>>();
 
   async function doLogin(login: string, password: string) {
