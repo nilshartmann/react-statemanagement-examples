@@ -258,6 +258,21 @@ label {
   padding: 0;
 }
 
+.App > footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1rem;
+  margin-top: 1.5rem;
+
+  color: var(--grey-3);
+  border-top: 4px solid var(--grey-1);
+}
+
+.App > footer a {
+  color: var(--color-primary);
+}
+
 .Date {
   margin: 0 0 0 0;
 }

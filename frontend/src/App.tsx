@@ -49,6 +49,14 @@ function App() {
           </Route>
         </Switch>
       )}
+      <footer>
+        <div>
+          <span>React Example App, Source Code:{"  "}</span>
+          <a href="https://github.com/nilshartmann/react-statemanagement-examples">
+            https://github.com/nilshartmann/react-statemanagement-examples
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }
