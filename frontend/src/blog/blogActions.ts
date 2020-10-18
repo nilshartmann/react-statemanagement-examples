@@ -2,7 +2,7 @@ import { BlogPost, BlogPostShort } from "types";
 import { ThunkAction } from "redux-thunk";
 import { AppState } from "reducers";
 import { ApiAction, apiRequestStart, apiRequestSuccess, apiRequestFailure } from "api/apiActions";
-import { fetchJson, sendJson } from "api/backend";
+import { fetchJson, sendJson } from "api/fetch-api";
 
 function setPosts(
   posts: BlogPostShort[],
@@ -34,12 +34,13 @@ export function loadPostsFromServer(
   token?: string
 ): ThunkAction<void, AppState, void, ApiAction | SetPostsAction> {
   return (dispatch, getState) => {
-    const { blog } = getState();
+    const { blog, api } = getState();
     if (
-      blog.posts.length > 0 &&
-      blog.options.orderBy === orderBy &&
-      blog.options.direction === direction &&
-      blog.options.token === token
+      api.error ||
+      (blog.posts.length > 0 &&
+        blog.options.orderBy === orderBy &&
+        blog.options.direction === direction &&
+        blog.options.token === token)
     ) {
       return;
     }

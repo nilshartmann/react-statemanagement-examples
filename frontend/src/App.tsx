@@ -11,21 +11,19 @@ import BlogPage from "blog/BlogPage";
 import useAppSelector from "useAppSelector";
 import LoadingIndicator from "LoadingIndicator";
 
-function useApiState() {
+function App() {
   const loading = useAppSelector((state) => state.api.loading);
   const description = useAppSelector((state) => state.api.description);
+  const error = useAppSelector((state) => state.api.error);
 
-  return { loading, description };
-}
-
-function App() {
-  const { loading, description } = useApiState();
+  const dataAvailable = !loading && !error;
 
   return (
     <div className="App">
       <AppHeader />
       {loading && <LoadingIndicator>{description}</LoadingIndicator>}
-      {loading || (
+      {error && <Error msg={error} />}
+      {dataAvailable && (
         <Switch>
           <Route exact path="/">
             <BlogPage>
@@ -56,3 +54,15 @@ function App() {
 }
 
 export default App;
+
+type ErrorProps = {
+  msg: string;
+};
+function Error({ msg }: ErrorProps) {
+  return (
+    <div>
+      <h1>API Request Failed!</h1>
+      <p>{msg.toString()}</p>
+    </div>
+  );
+}
