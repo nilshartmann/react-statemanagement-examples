@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/myapp/react-statemanagement-examples/static/css/main.06e37daa.chunk.css",
-    "main.js": "/myapp/react-statemanagement-examples/static/js/main.92e6211b.chunk.js",
-    "main.js.map": "/myapp/react-statemanagement-examples/static/js/main.92e6211b.chunk.js.map",
-    "runtime-main.js": "/myapp/react-statemanagement-examples/static/js/runtime-main.3113fff8.js",
-    "runtime-main.js.map": "/myapp/react-statemanagement-examples/static/js/runtime-main.3113fff8.js.map",
-    "static/js/2.54dccd03.chunk.js": "/myapp/react-statemanagement-examples/static/js/2.54dccd03.chunk.js",
-    "static/js/2.54dccd03.chunk.js.map": "/myapp/react-statemanagement-examples/static/js/2.54dccd03.chunk.js.map",
-    "index.html": "/myapp/react-statemanagement-examples/index.html",
-    "precache-manifest.444f779679c3cb39d18fb065bc19c5c8.js": "/myapp/react-statemanagement-examples/precache-manifest.444f779679c3cb39d18fb065bc19c5c8.js",
-    "service-worker.js": "/myapp/react-statemanagement-examples/service-worker.js",
-    "static/css/main.06e37daa.chunk.css.map": "/myapp/react-statemanagement-examples/static/css/main.06e37daa.chunk.css.map",
-    "static/js/2.54dccd03.chunk.js.LICENSE": "/myapp/react-statemanagement-examples/static/js/2.54dccd03.chunk.js.LICENSE"
+    "main.css": "/react-statemanagement-examples/static/css/main.06e37daa.chunk.css",
+    "main.js": "/react-statemanagement-examples/static/js/main.92e6211b.chunk.js",
+    "main.js.map": "/react-statemanagement-examples/static/js/main.92e6211b.chunk.js.map",
+    "runtime-main.js": "/react-statemanagement-examples/static/js/runtime-main.e01dcbb4.js",
+    "runtime-main.js.map": "/react-statemanagement-examples/static/js/runtime-main.e01dcbb4.js.map",
+    "static/js/2.93dde644.chunk.js": "/react-statemanagement-examples/static/js/2.93dde644.chunk.js",
+    "static/js/2.93dde644.chunk.js.map": "/react-statemanagement-examples/static/js/2.93dde644.chunk.js.map",
+    "index.html": "/react-statemanagement-examples/index.html",
+    "precache-manifest.fff87b26ff413f543cd3483170b74d8b.js": "/react-statemanagement-examples/precache-manifest.fff87b26ff413f543cd3483170b74d8b.js",
+    "service-worker.js": "/react-statemanagement-examples/service-worker.js",
+    "static/css/main.06e37daa.chunk.css.map": "/react-statemanagement-examples/static/css/main.06e37daa.chunk.css.map",
+    "static/js/2.93dde644.chunk.js.LICENSE": "/react-statemanagement-examples/static/js/2.93dde644.chunk.js.LICENSE"
   },
   "entrypoints": [
-    "static/js/runtime-main.3113fff8.js",
-    "static/js/2.54dccd03.chunk.js",
+    "static/js/runtime-main.e01dcbb4.js",
+    "static/js/2.93dde644.chunk.js",
     "static/css/main.06e37daa.chunk.css",
     "static/js/main.92e6211b.chunk.js"
   ]
